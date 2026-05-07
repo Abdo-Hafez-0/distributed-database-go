@@ -1,0 +1,126 @@
+You are responsible for GUI development, testing, and project documentation.
+
+Your role is to make the project usable and presentable.
+
+Current Resources Available in Repository:
+
+* Complete architecture prepared
+* API documentation available
+* Running prototype exists
+* Git workflow rules available
+
+Your Tasks (Step by Step):
+
+Step 1 — Study APIs
+
+Read:
+
+* docs/api.md
+
+Understand:
+
+* all endpoints
+* request formats
+* response formats
+
+---
+
+Step 2 — Build GUI Skeleton
+
+Inside:
+gui/
+
+Choose:
+
+* simple HTML/CSS/JS
+  OR
+* React
+
+Recommended pages:
+
+* Create Database
+* Create Table
+* Insert Record
+* View Records
+* Replication Status
+
+---
+
+Step 3 — Connect Frontend to APIs
+
+Connect GUI to:
+
+* master APIs
+* slave read APIs
+
+Use:
+
+* fetch()
+  OR
+* axios
+
+---
+
+Step 4 — System Testing
+
+Test:
+
+* all CRUD operations
+* replication flow
+* invalid requests
+* slave node failures
+
+Document all findings.
+
+---
+
+Step 5 — Create Project Documentation
+
+Update:
+README.md
+
+Include:
+
+* project overview
+* architecture
+* technologies
+* how to run nodes
+* API examples
+* screenshots
+
+---
+
+Step 6 — Create Final Report
+
+Inside:
+docs/report/
+
+Prepare:
+
+* architecture explanation
+* implementation details
+* screenshots
+* testing results
+* challenges faced
+
+---
+
+Step 7 — Demo Preparation
+
+Prepare:
+
+* final screenshots
+* API demonstrations
+* replication demonstrations
+
+Verify the entire system works together before submission.
+
+---
+
+Expected Final Deliverables:
+
+* Working GUI
+* Full project testing
+* Final README
+* Final project report
+* Demo preparation

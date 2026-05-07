@@ -1,0 +1,126 @@
+You are responsible for replication and fault tolerance.
+
+Your role is to make sure data written to the master node is replicated to slave nodes.
+
+Current Resources Available in Repository:
+
+* Initial replication prototype already implemented
+* API documentation available
+* Shared models already created
+* Master/slave communication already tested
+
+Your Tasks (Step by Step):
+
+Step 1 — Study Existing Prototype
+
+Read:
+
+* master/main.go
+* slave1/main.go
+
+Understand:
+
+* HTTP communication flow
+* replication request structure
+
+---
+
+Step 2 — Create Replication Package
+
+Inside:
+master/replication/
+
+Create:
+
+* replication.go
+
+Responsibilities:
+
+* send replication requests
+* manage slave node URLs
+* retry failed requests
+* return replication status
+
+---
+
+Step 3 — Replication Flow
+
+For every successful write operation:
+
+* master sends request to slave1
+* master sends request to slave2
+
+Use:
+POST /replicate
+
+Send:
+
+* operation type
+* database
+* table
+* data
+
+---
+
+Step 4 — Add Failure Handling
+
+If a slave node fails:
+
+* do NOT stop master operation
+* log replication failure
+* continue system operation
+
+Store failed requests temporarily.
+
+---
+
+Step 5 — Retry Mechanism
+
+Implement simple retry logic:
+
+* retry failed replication after delay
+* maximum retry count
+
+---
+
+Step 6 — Health Check System
+
+Implement:
+GET /health
+
+Verify:
+
+* node availability
+* response status
+
+---
+
+Step 7 — Logging
+
+Add logs:
+
+* replication success
+* replication failure
+* retry attempts
+* unavailable nodes
+
+---
+
+Step 8 — Testing
+
+Test:
+
+* one slave offline
+* both slaves online
+* replication delays
+* retry logic
+
+---
+
+Expected Final Deliverables:
+
+* Complete replication system
+* Fault tolerance support
+* Retry mechanism
+* Health check system
+* Replication logging

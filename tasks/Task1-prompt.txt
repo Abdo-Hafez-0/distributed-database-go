@@ -1,0 +1,151 @@
+You are responsible for building the Master Node of the distributed database system.
+
+Your role is the central controller of the system. The master node handles all write operations and sends replication requests to slave nodes.
+
+Current Resources Available in Repository:
+
+* Project architecture already prepared
+* API documentation in:
+  docs/api.md
+* Shared request/response structs in:
+  shared/types/models.go
+* Initial replication prototype already working
+* Git workflow rules already documented
+
+Your Tasks (Step by Step):
+
+Step 1 — Understand Existing APIs
+Read:
+
+* docs/api.md
+* shared/types/models.go
+
+Understand:
+
+* request formats
+* response formats
+* replication flow
+
+Do NOT modify shared request formats without team discussion.
+
+---
+
+Step 2 — Setup Master Routing System
+
+Inside:
+master/routes/
+
+Create:
+
+* routes.go
+
+Register endpoints:
+
+* POST /create-db
+* POST /create-table
+* POST /insert
+* PUT /update
+* DELETE /delete
+* DELETE /drop-db
+
+---
+
+Step 3 — Create Handlers
+
+Inside:
+master/handlers/
+
+Create:
+
+* create_database.go
+* create_table.go
+* insert.go
+* update.go
+* delete.go
+* drop_database.go
+
+Responsibilities:
+
+* parse request body
+* validate request
+* call database layer
+* return JSON response
+
+Use the shared structs from:
+shared/types/models.go
+
+---
+
+Step 4 — Integrate Database Layer
+
+Use the database functions created by Member 2.
+
+Expected functions:
+
+* CreateDatabase()
+* CreateTable()
+* InsertRecord()
+* UpdateRecord()
+* DeleteRecord()
+
+Do NOT write direct SQL inside handlers.
+
+---
+
+Step 5 — Trigger Replication
+
+After every successful write operation:
+
+* call replication functions created by Member 3
+
+Replication should happen AFTER successful local database operation.
+
+Example flow:
+Client Request
+→ Save in master DB
+→ Send replication request to slaves
+→ Return success response
+
+---
+
+Step 6 — Error Handling
+
+All APIs must return JSON:
+
+Success:
+{
+"success": true,
+"message": "..."
+}
+
+Failure:
+{
+"success": false,
+"message": "..."
+}
+
+---
+
+Step 7 — Testing
+
+Test all APIs using:
+
+* Postman
+* Thunder Client
+* curl
+
+Verify:
+
+* request validation
+* database operations
+* replication triggering
+
+---
+
+Expected Final Deliverables:
+
+* Complete master API system
+* Working CRUD endpoints
+* Integration with replication layer
+* Clean route organization
+* Error handling

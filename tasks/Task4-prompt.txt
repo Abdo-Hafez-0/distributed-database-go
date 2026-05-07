@@ -1,0 +1,118 @@
+You are responsible for slave node implementation and the bonus cross-technology worker node.
+
+Your role is to build the slave database nodes that receive replicated data.
+
+Current Resources Available in Repository:
+
+* Replication prototype already exists
+* Shared API documentation available
+* Shared request models already created
+
+Your Tasks (Step by Step):
+
+Step 1 — Setup Slave Architecture
+
+Inside:
+slave1/
+slave2/
+
+Implement:
+
+* handlers
+* routes
+* database connection
+* replication endpoint
+
+---
+
+Step 2 — Implement Replication Endpoint
+
+Endpoint:
+POST /replicate
+
+Responsibilities:
+
+* receive replication request
+* apply operation locally
+* return JSON response
+
+Supported operations:
+
+* create table
+* insert
+* update
+* delete
+
+---
+
+Step 3 — Implement Read Queries
+
+Add:
+
+* GET /select
+* GET /search
+
+Responsibilities:
+
+* fetch records
+* return JSON results
+
+Slaves should mainly handle read operations.
+
+---
+
+Step 4 — Database Integration
+
+Use database layer functions created by Member 2.
+
+Do NOT duplicate SQL logic.
+
+---
+
+Step 5 — Cross-Technology Worker Node
+
+Implement one additional worker node using another technology.
+
+Recommended:
+
+* Python Flask
+  OR
+* Node.js Express
+
+Responsibilities:
+
+* receive requests from Go master
+* process request
+* return response
+
+This satisfies the bonus requirement.
+
+---
+
+Step 6 — Logging
+
+Add logs:
+
+* replication received
+* records inserted
+* slave startup
+* errors
+
+---
+
+Step 7 — Testing
+
+Verify:
+
+* slave receives replication correctly
+* select/search works
+* cross-technology node communicates successfully
+
+---
+
+Expected Final Deliverables:
+
+* Fully working slave nodes
+* Replication receiver system
+* Read query APIs
+* Bonus cross-technology worker node

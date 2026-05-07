@@ -1,0 +1,144 @@
+You are responsible for the database engine and MySQL integration.
+
+Your job is to create reusable database functions that the entire system will use.
+
+Current Resources Available in Repository:
+
+* Project architecture already prepared
+* Shared request/response structs already created
+* API documentation available
+* MySQL selected as main database system
+
+Your Tasks (Step by Step):
+
+Step 1 — Setup MySQL Connection
+
+Inside:
+master/database/
+
+Create:
+
+* connection.go
+
+Responsibilities:
+
+* connect to MySQL
+* load environment variables
+* return database connection object
+
+Use:
+
+* github.com/go-sql-driver/mysql
+* github.com/joho/godotenv
+
+Environment variables:
+
+* DB_HOST
+* DB_PORT
+* DB_USER
+* DB_PASSWORD
+* DB_NAME
+
+---
+
+Step 2 — Create Query Layer
+
+Inside:
+master/database/
+
+Create:
+
+* queries.go
+
+Implement:
+
+* CreateDatabase()
+* CreateTable()
+* InsertRecord()
+* UpdateRecord()
+* DeleteRecord()
+* SelectRecords()
+
+Functions must:
+
+* accept parameters
+* return errors properly
+* avoid duplicated code
+
+---
+
+Step 3 — Dynamic Table Creation
+
+Implement dynamic SQL table creation.
+
+Example:
+{
+"table": "users",
+"columns": {
+"id": "INT PRIMARY KEY",
+"name": "VARCHAR(255)"
+}
+}
+
+Generate SQL dynamically.
+
+---
+
+Step 4 — Build Safe Query Logic
+
+Requirements:
+
+* validate table names
+* validate column names
+* prevent invalid queries
+* handle SQL errors cleanly
+
+---
+
+Step 5 — Create Reusable Database Utilities
+
+Inside:
+shared/utils/
+
+Create helper functions for:
+
+* query generation
+* string formatting
+* validation
+
+---
+
+Step 6 — Create SQL Documentation
+
+Inside:
+sql/schema/
+
+Add example SQL schemas.
+
+Inside:
+sql/seed/
+
+Add sample insert statements.
+
+---
+
+Step 7 — Integration Testing
+
+Test database layer independently before integration.
+
+Verify:
+
+* database creation
+* table creation
+* insert/update/delete
+* select queries
+
+---
+
+Expected Final Deliverables:
+
+* Complete reusable MySQL engine
+* Dynamic table support
+* Query abstraction layer
+* Database utilities
+* SQL setup documentation
