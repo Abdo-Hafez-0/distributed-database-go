@@ -1,0 +1,21 @@
+# binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Go
+/bin/
+/vendor/
+
+# IDE
+.vscode/
+.idea/
+
+# database files
+*.db
+*.sqlite
+
+# logs
+*.log
