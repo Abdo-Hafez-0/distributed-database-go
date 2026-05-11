@@ -1,118 +1,109 @@
-You are responsible for slave node implementation and the bonus cross-technology worker node.
+Task 3 (Replication + Fault Tolerance) is completed and already integrated into the project.
 
-Your role is to build the slave database nodes that receive replicated data.
+Important Notes Before Starting Task 4:
 
-Current Resources Available in Repository:
+1. Replication System Already Exists
 
-* Replication prototype already exists
-* Shared API documentation available
-* Shared request models already created
+* The master replication package is implemented inside:
+  master/replication/
+* Do NOT rewrite the replication flow unless necessary.
 
-Your Tasks (Step by Step):
+2. All Writes Must Go Through Master
 
-Step 1 — Setup Slave Architecture
+* Slaves should NEVER expose public write APIs.
+* Insert/update/delete/create-table operations should happen only through the master node.
+* The master automatically replicates successful operations to slaves.
 
-Inside:
-slave1/
-slave2/
+3. Existing Replication Endpoint
+   Already implemented:
+   POST /replicate
 
-Implement:
-
-* handlers
-* routes
-* database connection
-* replication endpoint
-
----
-
-Step 2 — Implement Replication Endpoint
-
-Endpoint:
-POST /replicate
-
-Responsibilities:
+Current responsibilities:
 
 * receive replication request
-* apply operation locally
-* return JSON response
+* identify operation type
+* call:
 
-Supported operations:
+  * handleInsert()
+  * handleUpdate()
+  * handleDelete()
 
-* create table
-* insert
-* update
-* delete
+Your job is to replace placeholder logic with real DB queries.
 
----
+4. Do NOT Duplicate SQL Logic
+   Use the shared database/query layer created by Member 2.
+   Avoid writing duplicate SQL execution code inside each slave.
 
-Step 3 — Implement Read Queries
-
-Add:
+5. Read APIs Are Your Main Responsibility
+   You should now implement:
 
 * GET /select
 * GET /search
 
-Responsibilities:
+These endpoints should:
 
-* fetch records
-* return JSON results
+* fetch replicated data
+* return JSON responses
+* mainly serve read operations
 
-Slaves should mainly handle read operations.
+6. Retry + Fault Tolerance Already Handled
+   The master replication package already:
 
----
+* retries failed requests
+* handles offline slaves
+* logs failures/success
+* keeps the system alive if one node fails
 
-Step 4 — Database Integration
+You do not need to implement retry logic again.
 
-Use database layer functions created by Member 2.
+7. Health Endpoint Already Exists
+   Available on:
+   GET /health
 
-Do NOT duplicate SQL logic.
+8. Replication Request Format
+   Current request structure:
 
----
+type ReplicationRequest struct {
+Operation string
+Database  string
+Table     string
+Data      interface{}
+}
 
-Step 5 — Cross-Technology Worker Node
+9. Cross-Technology Worker Node
+   For the bonus:
 
-Implement one additional worker node using another technology.
+* create an additional worker node using:
 
-Recommended:
+  * Python Flask
+    OR
+  * Node.js Express
 
-* Python Flask
-  OR
-* Node.js Express
+The worker should:
 
-Responsibilities:
-
-* receive requests from Go master
-* process request
+* receive requests from master
+* process data
 * return response
 
-This satisfies the bonus requirement.
+10. Recommended Priority Order
 
----
+11. Connect slaves to real database
 
-Step 6 — Logging
+12. Implement real insert/update/delete queries
 
-Add logs:
+13. Implement select/search APIs
 
-* replication received
-* records inserted
-* slave startup
-* errors
+14. Add logging
 
----
+15. Implement bonus worker node
 
-Step 7 — Testing
+16. Perform integration testing with master
 
-Verify:
+17. Important Architecture Rule
+    Slaves are replica/read nodes.
+    They should mainly:
 
-* slave receives replication correctly
-* select/search works
-* cross-technology node communicates successfully
+* receive replicated data
+* answer read queries
 
----
-
-Expected Final Deliverables:
-
-* Fully working slave nodes
-* Replication receiver system
-* Read query APIs
-* Bonus cross-technology worker node
+Master remains the only write coordinator.
