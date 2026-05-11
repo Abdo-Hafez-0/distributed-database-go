@@ -42,3 +42,8 @@ func DeleteRecord(db *sql.DB, tableName string, whereClause string, whereArgs ..
 func SelectRecords(db *sql.DB, tableName string, opts SelectOptions) ([]map[string]interface{}, error) {
 	return crud.SelectRecords(db, tableName, opts)
 }
+func DropDatabase(db *sql.DB, dbName string) error {
+	query := "DROP DATABASE " + dbName
+	_, err := db.Exec(query)
+	return err
+}

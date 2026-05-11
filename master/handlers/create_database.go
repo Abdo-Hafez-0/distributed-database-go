@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"encoding/json"
 	"net/http"
 
 	"distributed-database-go/master/database"
@@ -11,30 +10,40 @@ import (
 
 func CreateDatabaseHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
-		writeJSON(w, http.StatusMethodNotAllowed, false, "method not allowed")
+		methodNotAllowed(w, "POST")
 		return
 	}
 
 	var req types.CreateDatabaseRequest
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		writeJSON(w, http.StatusBadRequest, false, "invalid request body")
+	if err := parseBody(r, &req); err != nil {
+		WriteJSON(w, http.StatusBadRequest, false, "invalid request body")
 		return
 	}
 
 	if req.Database == "" {
-		writeJSON(w, http.StatusBadRequest, false, "database name is required")
+		WriteJSON(w, http.StatusBadRequest, false, "database is required")
 		return
 	}
 
-	if err := database.CreateDatabase(req); err != nil {
-		writeJSON(w, http.StatusInternalServerError, false, err.Error())
+	if database.DB == nil {
+		WriteJSON(w, http.StatusInternalServerError, false, "database connection is not initialized")
 		return
 	}
 
-	if err := replication.ReplicateCreateDatabase(req); err != nil {
-		writeJSON(w, http.StatusInternalServerError, false, "database created locally but replication failed")
+	if err := database.CreateDatabase(database.DB, req.Database); err != nil {
+		WriteJSON(w, http.StatusInternalServerError, false, err.Error())
 		return
 	}
 
-	writeJSON(w, http.StatusOK, true, "database created successfully")
+	repReq := types.ReplicationRequest{
+		Operation: "create_database",
+		Database:  req.Database,
+	}
+
+	if err := replication.Replicate(repReq); err != nil {
+		WriteJSON(w, http.StatusInternalServerError, false, "database created locally but replication failed: "+err.Error())
+		return
+	}
+
+	WriteJSON(w, http.StatusOK, true, "database created successfully")
 }
