@@ -1,0 +1,45 @@
+distributed-database-go/
+│
+├── master/
+│   ├── handlers/
+│   ├── replication/
+│   ├── database/
+│   │   ├── connection.go
+│   │   ├── queries.go
+│   │   └── migrations.go
+│   ├── models/
+│   ├── routes/
+│   └── main.go
+│
+├── slave1/
+│   ├── handlers/
+│   ├── database/
+│   ├── models/
+│   ├── routes/
+│   └── main.go
+│
+├── slave2/
+│   ├── handlers/
+│   ├── database/
+│   ├── models/
+│   ├── routes/
+│   └── main.go
+│
+├── shared/
+│   ├── config/
+│   ├── utils/
+│   ├── constants/
+│   └── types/
+│
+├── sql/
+│   ├── schema/
+│   ├── seed/
+│   └── migrations/
+│
+├── docs/
+├── gui/
+│
+├── .env
+├── .gitignore
+├── README.md
+└── go.mod

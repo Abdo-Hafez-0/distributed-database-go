@@ -42,3 +42,8 @@ type ReplicationRequest struct {
 	Table     string                 `json:"table"`
 	Data      map[string]interface{} `json:"data"`
 }
+
+type ReplicationResponse struct {
+	Status  string `json:"status"`
+	Message string `json:"message"`
+}
