@@ -19,7 +19,8 @@ type QueryResult struct {
 //
 //	InsertRecord(db, "users", map[string]interface{}{"name": "Alice", "age": 30})
 func InsertRecord(db *sql.DB, tableName string, data map[string]interface{}) (QueryResult, error) {
-	if err := utils.ValidateIdentifier(tableName); err != nil {
+	quotedTable, err := utils.QuoteTableName(tableName)
+	if err != nil {
 		return QueryResult{}, fmt.Errorf("InsertRecord: %w", err)
 	}
 	if len(data) == 0 {
@@ -32,8 +33,8 @@ func InsertRecord(db *sql.DB, tableName string, data map[string]interface{}) (Qu
 	}
 
 	query := fmt.Sprintf(
-		"INSERT INTO `%s` (%s) VALUES (%s)",
-		tableName, cols, placeholders,
+		"INSERT INTO %s (%s) VALUES (%s)",
+		quotedTable, cols, placeholders,
 	)
 
 	res, err := db.Exec(query, args...)

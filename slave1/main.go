@@ -4,19 +4,22 @@ import (
 	"log"
 	"net/http"
 
+	"distributed-database-go/master/database"
 	"distributed-database-go/slave1/handlers"
 )
 
 func main() {
+	db := database.MustConnect()
+	handlers.SetDatabase(db)
 
-	// Health Check Endpoint
 	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("OK"))
 	})
 
-	// Replication Endpoint
 	http.HandleFunc("/replicate", handlers.HandleReplication)
+	http.HandleFunc("/select", handlers.HandleSelect)
+	http.HandleFunc("/search", handlers.HandleSearch)
 
 	log.Println("Slave1 running on port 8001")
 

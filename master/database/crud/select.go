@@ -9,8 +9,8 @@ import (
 
 // SelectOptions configures a SELECT query.
 type SelectOptions struct {
-	Columns   []string      // nil or empty → SELECT *
-	Where     string        // optional WHERE clause (without the WHERE keyword)
+	Columns   []string // nil or empty → SELECT *
+	Where     string   // optional WHERE clause (without the WHERE keyword)
 	WhereArgs []interface{}
 	OrderBy   string // e.g. "created_at DESC"
 	Limit     int    // 0 means no LIMIT
@@ -24,7 +24,8 @@ type SelectOptions struct {
 //
 //	SelectRecords(db, "users", SelectOptions{Where: "active = ?", WhereArgs: []interface{}{1}})
 func SelectRecords(db *sql.DB, tableName string, opts SelectOptions) ([]map[string]interface{}, error) {
-	if err := utils.ValidateIdentifier(tableName); err != nil {
+	quotedTable, err := utils.QuoteTableName(tableName)
+	if err != nil {
 		return nil, fmt.Errorf("SelectRecords: %w", err)
 	}
 
@@ -33,7 +34,7 @@ func SelectRecords(db *sql.DB, tableName string, opts SelectOptions) ([]map[stri
 		return nil, err
 	}
 
-	query := buildSelectQuery(tableName, colStr, opts)
+	query := buildSelectQuery(quotedTable, colStr, opts)
 
 	rows, err := db.Query(query, opts.WhereArgs...)
 	if err != nil {

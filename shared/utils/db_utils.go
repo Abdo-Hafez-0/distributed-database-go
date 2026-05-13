@@ -163,6 +163,29 @@ func QuoteIdentifier(name string) (string, error) {
 	return fmt.Sprintf("`%s`", name), nil
 }
 
+// QuoteTableName supports either a bare table name or a fully qualified
+// MySQL identifier in the form database.table.
+func QuoteTableName(name string) (string, error) {
+	parts := strings.Split(name, ".")
+	switch len(parts) {
+	case 1:
+		return QuoteIdentifier(name)
+	case 2:
+		dbPart, tblPart := parts[0], parts[1]
+		quotedDB, err := QuoteIdentifier(dbPart)
+		if err != nil {
+			return "", err
+		}
+		quotedTable, err := QuoteIdentifier(tblPart)
+		if err != nil {
+			return "", err
+		}
+		return fmt.Sprintf("%s.%s", quotedDB, quotedTable), nil
+	default:
+		return "", fmt.Errorf("invalid table name %q", name)
+	}
+}
+
 // PlaceholderList returns a comma-separated list of n question marks,
 // useful for IN clauses.  E.g. PlaceholderList(3) → "?, ?, ?"
 func PlaceholderList(n int) string {

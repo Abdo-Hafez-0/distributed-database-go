@@ -14,14 +14,15 @@ import (
 //
 //	DeleteRecord(db, "users", "id = ?", 5)
 func DeleteRecord(db *sql.DB, tableName string, whereClause string, whereArgs ...interface{}) (QueryResult, error) {
-	if err := utils.ValidateIdentifier(tableName); err != nil {
+	quotedTable, err := utils.QuoteTableName(tableName)
+	if err != nil {
 		return QueryResult{}, fmt.Errorf("DeleteRecord: %w", err)
 	}
 	if strings.TrimSpace(whereClause) == "" {
 		return QueryResult{}, fmt.Errorf("DeleteRecord %q: whereClause must not be empty", tableName)
 	}
 
-	query := fmt.Sprintf("DELETE FROM `%s` WHERE %s", tableName, whereClause)
+	query := fmt.Sprintf("DELETE FROM %s WHERE %s", quotedTable, whereClause)
 
 	res, err := db.Exec(query, whereArgs...)
 	if err != nil {

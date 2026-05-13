@@ -14,7 +14,8 @@ import (
 //
 //	UpdateRecord(db, "users", map[string]interface{}{"name": "Bob"}, "id = ?", 1)
 func UpdateRecord(db *sql.DB, tableName string, data map[string]interface{}, whereClause string, whereArgs ...interface{}) (QueryResult, error) {
-	if err := utils.ValidateIdentifier(tableName); err != nil {
+	quotedTable, err := utils.QuoteTableName(tableName)
+	if err != nil {
 		return QueryResult{}, fmt.Errorf("UpdateRecord: %w", err)
 	}
 	if len(data) == 0 {
@@ -29,7 +30,7 @@ func UpdateRecord(db *sql.DB, tableName string, data map[string]interface{}, whe
 		return QueryResult{}, fmt.Errorf("UpdateRecord %q: %w", tableName, err)
 	}
 
-	query := fmt.Sprintf("UPDATE `%s` SET %s WHERE %s", tableName, setClauses, whereClause)
+	query := fmt.Sprintf("UPDATE %s SET %s WHERE %s", quotedTable, setClauses, whereClause)
 	args := append(setArgs, whereArgs...)
 
 	res, err := db.Exec(query, args...)
